@@ -8,6 +8,8 @@ import DayForecastCard from "../components/DayForecastCard";
 import HourlyForecastCard from "../components/HourlyForecastCard";
 import { useNavigate } from "react-router-dom";
 import { Oval } from 'react-loader-spinner';
+import {PieChart,Pie,Cell,Tooltip,Legend, ResponsiveContainer,} from "recharts";
+
 
 function SearchPage() {
   const [loading, setLoading] = useState(false);
@@ -77,7 +79,7 @@ function SearchPage() {
   ) : (
     data && (
       <>
-        <AQICard aqi={data.aqi * 50} status={getAQIStatus(data.aqi)} />
+        {/* <AQICard aqi={data.aqi * 50} status={getAQIStatus(data.aqi)} />
         <InfoCard
           temp={data.temp}
           wind={data.wind}
@@ -87,7 +89,61 @@ function SearchPage() {
           day={new Date().toLocaleDateString("en-US", { weekday: "long" })}
           temp={data.temp}
           aqi={`${data.aqi * 50} AQI`}
-        />
+        /> */}
+
+        <>
+  <AQICard aqi={data.aqi * 50} status={getAQIStatus(data.aqi)} />
+
+
+  <InfoCard temp={data.temp} wind={data.wind} humidity={data.humidity} />
+
+
+  <DayForecastCard
+    day={new Date().toLocaleDateString("en-US", { weekday: "long" })}
+    temp={data.temp}
+    aqi={`${data.aqi * 50} AQI`}
+  />
+
+
+  {data?.components && (
+    <div className="p-4 max-w-md mx-auto mt-4">
+      <h2 className="text-xl font-bold text-center mb-2 text-green-500">
+        Pollutant Breakdown
+      </h2>
+      <ResponsiveContainer width="100%" height={300}>
+        <PieChart>
+          <Pie
+            dataKey="value"
+            isAnimationActive={true}
+            data={[
+              { name: "CO", value: data.components.co },
+              { name: "NO₂", value: data.components.no2 },
+              { name: "O₃", value: data.components.o3 },
+              { name: "PM2.5", value: data.components.pm2_5 },
+              { name: "PM10", value: data.components.pm10 },
+            ]}
+            cx="50%"
+            cy="50%"
+            outerRadius={100}
+            fill="#8884d8"
+            label
+          >
+            {["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#AA336A"].map(
+              (color, index) => (
+                <Cell key={`cell-${index}`} fill={color} />
+              )
+            )}
+          </Pie>
+          <Tooltip
+     formatter={(value, name) => [`${value} µg/m³`, name]}
+          />
+          <Legend />
+        </PieChart>
+      </ResponsiveContainer>
+    </div>
+  )}
+</>
+
       </>
     )
   )}

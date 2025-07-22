@@ -22,6 +22,7 @@ export const getAirQualityData = async (lat, lon) => {
 
   return {
     aqi: airRes.data.list[0].main.aqi,
+    components: airRes.data.list[0].components,
     temp: weatherRes.data.main.temp,
     wind: weatherRes.data.wind.speed,
     humidity: weatherRes.data.main.humidity,
