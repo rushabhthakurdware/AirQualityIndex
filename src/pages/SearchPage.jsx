@@ -79,7 +79,7 @@ function SearchPage() {
   ) : (
     data && (
       <>
-        {/* <AQICard aqi={data.aqi * 50} status={getAQIStatus(data.aqi)} />
+        <AQICard aqi={data.aqi * 50} status={getAQIStatus(data.aqi)} />
         <InfoCard
           temp={data.temp}
           wind={data.wind}
@@ -89,7 +89,7 @@ function SearchPage() {
           day={new Date().toLocaleDateString("en-US", { weekday: "long" })}
           temp={data.temp}
           aqi={`${data.aqi * 50} AQI`}
-        /> */}
+        />
 
         <>
   <AQICard aqi={data.aqi * 50} status={getAQIStatus(data.aqi)} />

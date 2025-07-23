@@ -23,13 +23,37 @@ function CurrentPage() {
 
   const buttonref = useRef(null);
 
+  const cardContainerRef = useRef(null);
+const pieChartRef = useRef(null);
+
+
   useGSAP(() => {
-    gsap.to(buttonref.current,{
-      right: 20,
-      duration: 5
-    })
-  })
-  
+  if (buttonref.current) {
+    gsap.fromTo(
+      buttonref.current,
+      { x: -100, opacity: 0 },
+      { x: 0, opacity: 1, duration: 1.2, ease: "power2.out" }
+    );
+  }
+
+  if (cardContainerRef.current) {
+    gsap.fromTo(
+      cardContainerRef.current,
+      { x: -100, opacity: 0 },
+      { x: 0, opacity: 1, duration: 1.2, delay: 0.5, ease: "power2.out" }
+    );
+  }
+
+  if (pieChartRef.current) {
+    gsap.fromTo(
+      pieChartRef.current,
+      { x: 100, opacity: 0, scale: 0.95 },
+      { x: 0, opacity: 1, scale: 1, duration: 1, delay: 1, ease: "back.out(1.7)" }
+    );
+  }
+}, { dependencies: [data] });
+
+
 
   const navigate = useNavigate();
 
@@ -63,12 +87,10 @@ function CurrentPage() {
 
   return (
     <div className="text-white relative">
-  <div className="relative">
-    <img
-      src={myPhoto}
-      alt="background"
-      className="w-full h-70 object-cover"
-    />
+  <div
+  className="min-h-screen bg-cover bg-center bg-no-repeat text-white relative"
+  style={{ backgroundImage: `url(${myPhoto})` }}
+>
 
     <button
     ref={buttonref}
@@ -84,9 +106,9 @@ function CurrentPage() {
     >
        move to History →
     </button>
-  </div>
+  
 
-  <h1 className="text-2xl font-bold mb-2 mt-4 items-center justify-center text-center">Your Current Air Quality</h1>
+  <h1 className="text-2xl font-bold mb-2 mt-4 items-center justify-center text-center relative z-10">Your Current Air Quality</h1>
   {error && <p className="text-red-500">{error}</p>}
 
 
@@ -102,7 +124,13 @@ function CurrentPage() {
     />
   </div>
   ):data? (
-    <>
+  <>
+    
+
+    <div className="relative z-10 flex flex-col lg:flex-row lg:items-start lg:justify-center gap-4 mt-20 px-4">
+
+      <div className="flex flex-col  w-full " ref={cardContainerRef}>
+
       <AQICard aqi={data.aqi * 50} status={getAQIStatus(data.aqi)} />
       <InfoCard temp={data.temp} wind={data.wind} humidity={data.humidity} />
       <DayForecastCard
@@ -110,9 +138,11 @@ function CurrentPage() {
         temp={data.temp}
         aqi={`${data.aqi * 50} AQI`}
       />
-
+      </div>
       {data?.components && (
-  <div className="p-4 max-w-md mx-auto mt-4">
+  <div className="p-4 w-full lg:w-1/2 max-w-md mx-auto lg:mx-0"
+      ref={pieChartRef}>
+
     <h2 className="text-xl font-bold text-center mb-2 text-green-500">Pollutant Breakdown</h2>
     <ResponsiveContainer width="100%" height={300}>
       <PieChart>
@@ -146,9 +176,11 @@ function CurrentPage() {
     </ResponsiveContainer>
   </div>
 )}
+</div>
 
     </>
   ):null}
+</div>
 </div>
 );
 }

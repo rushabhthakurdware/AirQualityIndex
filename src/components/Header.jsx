@@ -30,14 +30,14 @@ function Header({ city, setCity, onSearch, onCurrentLocation, onHistory }) {
   };
 
   return (
-    <div className="relative text-white">
+    <div className="relative text-white h-0">
       <img
         src={myPhoto}
         alt="background"
-        className="w-full h-70 object-cover "
+        className="w-screen h-screen bg-cover  relative bg-no-repeat"
       ></img>
 
-      <div className="absolute inset-0 bg-black-600 bg-opacity-50 flex flex-col items-center justify-center text-center px-4">
+      <div className="absolute inset-0 bg-black-600 bg-opacity-50 flex flex-col items-center  text-center px-4 mt-30">
         <h1 className="text-2xl font-bold text-green-600">AIR QUALITY MONITOR</h1>
         <p className="italic mb-2 mt-2  font-semibold tetxt-xl text-green-600 ">Weather Forecast</p>
         <p className=" font-semibold text-l text-green-600">Get Air Quality of your current location or any other places you want to know about.</p>
